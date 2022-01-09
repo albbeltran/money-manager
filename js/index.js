@@ -17,8 +17,13 @@ form.addEventListener('submit',function(e){
 });
 
 function saveTransactionObj(transactionObj){
-    let JSONtransactionObj = JSON.stringify(transactionObj);
-    localStorage.setItem('transactionData',JSONtransactionObj);
+    //Getting the array from the local storage
+    let transactionArray = JSON.parse(localStorage.getItem('transactionData')) || [];
+    transactionArray.push(transactionObj);
+    //Converting the transaction array to JSON
+    let JSONtransactionArray = JSON.stringify(transactionArray);
+    //Saving the transaction array JSON in the local storage
+    localStorage.setItem('transactionData',JSONtransactionArray);
 }
 
 function convertFormDataToTransactionObj(transactionFormData){
