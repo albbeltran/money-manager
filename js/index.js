@@ -6,37 +6,22 @@ form.addEventListener('submit',function(e){
     let transactionTable = document.getElementById('transactionTable');
     let newTransactionRow = transactionTable.insertRow(-1);
 
-    let insertContent = insertRowinTable(transactionFormData, newTransactionRow)
+    let transactionObj = convertFormDataToTransactionObj(transactionFormData)
 
-    let newTransactionCell = newTransactionRow.insertCell(0);
-    newTransactionCell.textContent = insertContent.transactionType;
-    newTransactionCell = newTransactionRow.insertCell(1);
-    newTransactionCell.textContent = insertContent.transactionDescription;
-    newTransactionCell = newTransactionRow.insertCell(2);
-    newTransactionCell.textContent = insertContent.transactionAmount;
-    newTransactionCell = newTransactionRow.insertCell(3);
-    newTransactionCell.textContent = insertContent.transactionCategory;
+    saveTransactionObj(transactionObj);
 
-    JSONinsertContent = JSON.stringify(insertContent);
-
-    localStorage.setItem('transaction',JSONinsertContent);
+    insertCellTable(newTransactionRow,transactionObj["transactionType"]);
+    insertCellTable(newTransactionRow,transactionObj["transactionDescription"]);
+    insertCellTable(newTransactionRow,transactionObj["transactionAmount"]);
+    insertCellTable(newTransactionRow,transactionObj["transactionCategory"]);
 });
 
-// function convertFormDataToTransactionObj(transactionFormData){
-//     let transactionType = transactionFormData.get('transactionType');
-//     let transactionDescription = transactionFormData.get('transactionDescription');
-//     let transactionAmount = transactionFormData.get('transactionAmount');
-//     let transactionCategory = transactionFormData.get('transactionCategory');
+function saveTransactionObj(transactionObj){
+    let JSONtransactionObj = JSON.stringify(transactionObj);
+    localStorage.setItem('transactionData',JSONtransactionObj);
+}
 
-//     return {
-//         'transactionType': transactionType,
-//         'transactionDescription': transactionDescription,
-//         'transactionAmount': transactionAmount,
-//         'transactionCategory': transactionCategory
-//     }
-// }
-
-function insertRowinTable(transactionFormData){
+function convertFormDataToTransactionObj(transactionFormData){
     let transactionType = transactionFormData.get('transactionType');
     let transactionDescription = transactionFormData.get('transactionDescription');
     let transactionAmount = transactionFormData.get('transactionAmount');
@@ -48,6 +33,11 @@ function insertRowinTable(transactionFormData){
         'transactionAmount': transactionAmount,
         'transactionCategory': transactionCategory
     }
+}
+
+function insertCellTable(newTransactionRow,transaction){
+    let newTransactionCell = newTransactionRow.insertCell(-1);
+    newTransactionCell.textContent = transaction;
 }
 
 //METHOD TO ADD ROWS AND COLUMNS WITH THE DOM
