@@ -6,10 +6,20 @@ form.addEventListener('submit',function(e){
     let transactionTable = document.getElementById('transactionTable');
     let newTransactionRow = transactionTable.insertRow(-1);
 
-    insertRowinTable(transactionFormData.get('transactionType'), newTransactionRow);
-    insertRowinTable(transactionFormData.get('transactionDescription'), newTransactionRow);
-    insertRowinTable(transactionFormData.get('transactionAmount'), newTransactionRow);
-    insertRowinTable(transactionFormData.get('transactionCategory'), newTransactionRow);
+    let insertContent = insertRowinTable(transactionFormData, newTransactionRow)
+
+    let newTransactionCell = newTransactionRow.insertCell(0);
+    newTransactionCell.textContent = insertContent.transactionType;
+    newTransactionCell = newTransactionRow.insertCell(1);
+    newTransactionCell.textContent = insertContent.transactionDescription;
+    newTransactionCell = newTransactionRow.insertCell(2);
+    newTransactionCell.textContent = insertContent.transactionAmount;
+    newTransactionCell = newTransactionRow.insertCell(3);
+    newTransactionCell.textContent = insertContent.transactionCategory;
+
+    JSONinsertContent = JSON.stringify(insertContent);
+
+    localStorage.setItem('transaction',JSONinsertContent);
 });
 
 // function convertFormDataToTransactionObj(transactionFormData){
@@ -26,9 +36,18 @@ form.addEventListener('submit',function(e){
 //     }
 // }
 
-function insertRowinTable(transaction, newTransactionRow){
-    let newTransactionCell = newTransactionRow.insertCell(-1);
-    newTransactionCell.textContent = transaction;
+function insertRowinTable(transactionFormData){
+    let transactionType = transactionFormData.get('transactionType');
+    let transactionDescription = transactionFormData.get('transactionDescription');
+    let transactionAmount = transactionFormData.get('transactionAmount');
+    let transactionCategory = transactionFormData.get('transactionCategory');
+
+    return {
+        'transactionType': transactionType,
+        'transactionDescription': transactionDescription,
+        'transactionAmount': transactionAmount,
+        'transactionCategory': transactionCategory
+    }
 }
 
 //METHOD TO ADD ROWS AND COLUMNS WITH THE DOM
