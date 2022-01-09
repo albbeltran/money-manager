@@ -2,11 +2,26 @@ const form = document.getElementById('transactionForm');
 
 form.addEventListener('submit',function(e){
     e.preventDefault();
+
     let transactionFormData = new FormData(form);
+    let transactionObj = convertFormDataToTransactionObj(transactionFormData);
+
+    insertNewRowTable(transactionObj);
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+    let transactionObjArray = JSON.parse(localStorage.getItem('transactionData'));
+    // for(let i=0; i<transactionObjArray.lenght; i++){
+    //     insertNewRowTable(transactionObjArray[i]);
+    // }
+    transactionObjArray.forEach(function(element){
+        insertNewRowTable(element);
+    });
+});
+
+function insertNewRowTable(transactionObj){
     let transactionTable = document.getElementById('transactionTable');
     let newTransactionRow = transactionTable.insertRow(-1);
-
-    let transactionObj = convertFormDataToTransactionObj(transactionFormData)
 
     saveTransactionObj(transactionObj);
 
@@ -14,16 +29,11 @@ form.addEventListener('submit',function(e){
     insertCellTable(newTransactionRow,transactionObj["transactionDescription"]);
     insertCellTable(newTransactionRow,transactionObj["transactionAmount"]);
     insertCellTable(newTransactionRow,transactionObj["transactionCategory"]);
-});
+}
 
-function saveTransactionObj(transactionObj){
-    //Getting the array from the local storage
-    let transactionArray = JSON.parse(localStorage.getItem('transactionData')) || [];
-    transactionArray.push(transactionObj);
-    //Converting the transaction array to JSON
-    let JSONtransactionArray = JSON.stringify(transactionArray);
-    //Saving the transaction array JSON in the local storage
-    localStorage.setItem('transactionData',JSONtransactionArray);
+function insertCellTable(newTransactionRow,transaction){
+    let newTransactionCell = newTransactionRow.insertCell(-1);
+    newTransactionCell.textContent = transaction;
 }
 
 function convertFormDataToTransactionObj(transactionFormData){
@@ -40,9 +50,14 @@ function convertFormDataToTransactionObj(transactionFormData){
     }
 }
 
-function insertCellTable(newTransactionRow,transaction){
-    let newTransactionCell = newTransactionRow.insertCell(-1);
-    newTransactionCell.textContent = transaction;
+function saveTransactionObj(transactionObj){
+    //Getting the array from the local storage
+    let transactionArray = JSON.parse(localStorage.getItem('transactionData')) || [];
+    transactionArray.push(transactionObj);
+    //Converting the transaction array to JSON
+    let JSONtransactionArray = JSON.stringify(transactionArray);
+    //Saving the transaction array JSON in the local storage
+    localStorage.setItem('transactionData',JSONtransactionArray);
 }
 
 //METHOD TO ADD ROWS AND COLUMNS WITH THE DOM
