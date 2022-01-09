@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.title{
+    text-align: center;
+}
+
+.container{
+    width: 100%;
+    max-width: 1000px;
+    margin: 3em auto;
+    background-color: whitesmoke;
+    padding: 2em 0em;
+}
+
+.container .transactionForm{
+    text-align: center;
+}
+
+.container .transactionForm div{
+    margin-bottom: 1em;
+}
+
+.container .transactionForm div .btn-submit{
+    display: inline-block;
+    font-size: 16px;
+    padding: 0.25em 0.75em;
+}
+
+.container .containerTable .transactionTable{
+    margin: 0 auto;
+}
+
+.container .containerTable table td,
+.container .containerTable table th{
+    padding: 0.5em;
+    text-align: center;
+    border: 1px solid black;
+}

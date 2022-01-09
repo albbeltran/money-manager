@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expend Manager</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <h1 class="title">Expend Manager</h1>
+    <div class="container">
+        <form class="transactionForm" id="transactionForm">
+            <div>
+                Transaccion Type
+                <input type="radio" id="income" name="transactionType" value="Ingreso">
+                <label for="income">Income</label>
+                <input type="radio" id="expense" name="transactionType" value="Egreso">
+                <label for="expense">Expense</label>
+            </div>
+    
+            <div>
+                <label for="transactionDescription">Description</label>
+                <input id="transactionDescription" name="transactionDescription">
+            </div>
+            <div>
+                <label for="transactionAmount">Amount</label>
+                <input type="number" id="transactionAmount" name="transactionAmount">
+            </div>
+            <div>
+                <label for="transactionCategory">Category</label>
+                <input id="transactionCategory" name="transactionCategory">
+            </div>
+            <div>
+                <input type="submit" class="btn-submit">
+            </div>
+        </form>
+
+        <div class="containerTable" id="containerTable">
+            <table class="transactionTable" id="transactionTable">
+                <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                </tr>
+                <tr>
+                    <td>Income</td>
+                    <td>Salary</td>
+                    <td>1000</td>
+                    <td>Job</td>
+                </tr>
+                <tr>
+                    <td>Expense</td>
+                    <td>Big Mac</td>
+                    <td>4</td>
+                    <td>Food</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script src="js/index.js"></script>
+</body>
+</html>
