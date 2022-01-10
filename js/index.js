@@ -1,19 +1,20 @@
 const form = document.getElementById('transactionForm');
 
+// localStorage.removeItem('transactionData');
+
 form.addEventListener('submit',function(e){
     e.preventDefault();
 
     let transactionFormData = new FormData(form);
     let transactionObj = convertFormDataToTransactionObj(transactionFormData);
 
+    saveTransactionObj(transactionObj);
     insertNewRowTable(transactionObj);
 });
 
 document.addEventListener('DOMContentLoaded',function(){
     let transactionObjArray = JSON.parse(localStorage.getItem('transactionData'));
-    // for(let i=0; i<transactionObjArray.lenght; i++){
-    //     insertNewRowTable(transactionObjArray[i]);
-    // }
+
     transactionObjArray.forEach(function(element){
         insertNewRowTable(element);
     });
@@ -22,8 +23,6 @@ document.addEventListener('DOMContentLoaded',function(){
 function insertNewRowTable(transactionObj){
     let transactionTable = document.getElementById('transactionTable');
     let newTransactionRow = transactionTable.insertRow(-1);
-
-    saveTransactionObj(transactionObj);
 
     insertCellTable(newTransactionRow,transactionObj["transactionType"]);
     insertCellTable(newTransactionRow,transactionObj["transactionDescription"]);
