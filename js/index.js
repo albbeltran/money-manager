@@ -10,6 +10,8 @@ form.addEventListener('submit',function(e){
 
     saveTransactionObj(transactionObj);
     insertNewRowTable(transactionObj);
+
+    form.reset();
 });
 
 document.addEventListener('DOMContentLoaded',function(){
