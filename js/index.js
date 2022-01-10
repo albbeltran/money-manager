@@ -2,6 +2,14 @@ const form = document.getElementById('transactionForm');
 
 // localStorage.removeItem('transactionData');
 
+document.addEventListener('DOMContentLoaded',function(){
+    let transactionObjArray = JSON.parse(localStorage.getItem('transactionData'));
+
+    transactionObjArray.forEach(function(element){
+        insertNewRowTable(element);
+    });
+});
+
 form.addEventListener('submit',function(e){
     e.preventDefault();
 
@@ -14,22 +22,30 @@ form.addEventListener('submit',function(e){
     form.reset();
 });
 
-document.addEventListener('DOMContentLoaded',function(){
-    let transactionObjArray = JSON.parse(localStorage.getItem('transactionData'));
-
-    transactionObjArray.forEach(function(element){
-        insertNewRowTable(element);
-    });
-});
-
 function insertNewRowTable(transactionObj){
     let transactionTable = document.getElementById('transactionTable');
     let newTransactionRow = transactionTable.insertRow(-1);
+
+    newTransactionRow.setAttribute('data-transaction-id',transactionObj["transactionId"]);
 
     insertCellTable(newTransactionRow,transactionObj["transactionType"]);
     insertCellTable(newTransactionRow,transactionObj["transactionDescription"]);
     insertCellTable(newTransactionRow,transactionObj["transactionAmount"]);
     insertCellTable(newTransactionRow,transactionObj["transactionCategory"]);
+
+    let removeCell = newTransactionRow.insertCell(4);
+    let btnRemove = document.createElement('button');
+    let removeContent = document.createTextNode('Delete');
+
+    btnRemove.appendChild(removeContent);
+    removeCell.appendChild(btnRemove);
+
+    btnRemove.addEventListener('click',function(event){
+        let transactionRow = event.target.parentNode.parentNode;
+        let transactionId = transactionRow.getAttribute('data-transaction-id')
+        event.target.parentNode.parentNode.remove();
+        removeTransactionObj(transactionId);
+    });
 }
 
 function insertCellTable(newTransactionRow,transaction){
@@ -37,18 +53,37 @@ function insertCellTable(newTransactionRow,transaction){
     newTransactionCell.textContent = transaction;
 }
 
+function getTransactionId(){
+    let lastTransactionId = localStorage.getItem('lastTransactionId') || '-1';
+    let newTransactionId = JSON.parse(lastTransactionId) + 1;
+    localStorage.setItem('lastTransactionId',JSON.stringify(newTransactionId));
+    return newTransactionId;
+}
+
 function convertFormDataToTransactionObj(transactionFormData){
     let transactionType = transactionFormData.get('transactionType');
     let transactionDescription = transactionFormData.get('transactionDescription');
     let transactionAmount = transactionFormData.get('transactionAmount');
     let transactionCategory = transactionFormData.get('transactionCategory');
+    let transactionId = getTransactionId();
 
     return {
         'transactionType': transactionType,
         'transactionDescription': transactionDescription,
         'transactionAmount': transactionAmount,
-        'transactionCategory': transactionCategory
+        'transactionCategory': transactionCategory,
+        'transactionId' : transactionId
     }
+}
+
+function removeTransactionObj(transactionId){
+    let transactionObjArr = JSON.parse(localStorage.getItem('transactionData'));
+    //I search the index of the transaction to remove
+    let transactionIndexArr = transactionObjArr.findIndex(element => element.transactionId == transactionId);
+    //I remove the transaction
+    transactionObjArr.splice(transactionIndexArr,1);
+    let JSONtransactionArray = JSON.stringify(transactionObjArr);
+    localStorage.setItem('transactionData',JSONtransactionArray);
 }
 
 function saveTransactionObj(transactionObj){
