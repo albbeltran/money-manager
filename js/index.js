@@ -42,6 +42,7 @@ function insertNewRowTable(transactionObj){
     let removeContent = document.createTextNode('Delete');
 
     btnRemove.appendChild(removeContent);
+    btnRemove.setAttribute('class','btn-remove');
     removeCell.appendChild(btnRemove);
 
     btnRemove.addEventListener('click',function(event){
