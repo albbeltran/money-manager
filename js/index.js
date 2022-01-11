@@ -3,6 +3,7 @@ const form = document.getElementById('transactionForm');
 // localStorage.removeItem('transactionData');
 
 document.addEventListener('DOMContentLoaded',function(){
+    drawOptionCategory();
     let transactionObjArray = JSON.parse(localStorage.getItem('transactionData'));
 
     transactionObjArray.forEach(function(element){
@@ -24,38 +25,6 @@ form.addEventListener('submit',function(e){
         form.reset();
     }
 });
-
-function validInput(transactionFormData){
-    let band = true;
-
-    if(transactionFormData.get('transactionType')==null){
-        band = false;
-    }
-    if(transactionFormData.get('transactionDescription')==''){
-        band = false;
-    }
-    if(transactionFormData.get('transactionAmount')==''){
-        band = false;
-    }
-
-    if(band==false){
-        showError();
-        return false;
-    }
-
-    containerError.innerHTML = '';
-}
-
-function showError(){
-    let containerError = document.getElementById('containerError');
-    containerError.innerHTML = '';
-
-    let error = document.createElement('div');
-    error.setAttribute('class','error');
-    let errorContent = document.createTextNode('Error, complete the fields');
-    error.appendChild(errorContent);
-    containerError.appendChild(error);
-}
 
 function insertNewRowTable(transactionObj){
     let transactionTable = document.getElementById('transactionTable');
@@ -111,9 +80,23 @@ function convertFormDataToTransactionObj(transactionFormData){
     }
 }
 
+function drawOptionCategory(){
+    let elementCategory = ["Food", "Home", "Comunication", "Business", "General"]
+    
+    elementCategory.forEach(function(element){
+        insertOptionCategory(element);
+    })
+}
+
+function insertOptionCategory(category){
+    let selectElement = document.getElementById('transactionCategory');
+    let insertHTML = '<option>' + category + '</option>';
+    selectElement.insertAdjacentHTML('beforeend',insertHTML);
+}
+
 function removeTransactionObj(transactionId){
     containerError.innerHTML = '';
-    
+
     let transactionObjArr = JSON.parse(localStorage.getItem('transactionData'));
     //I search the index of the transaction to remove
     let transactionIndexArr = transactionObjArr.findIndex(element => element.transactionId == transactionId);
@@ -131,6 +114,23 @@ function saveTransactionObj(transactionObj){
     let JSONtransactionArray = JSON.stringify(transactionArray);
     //Saving the transaction array JSON in the local storage
     localStorage.setItem('transactionData',JSONtransactionArray);
+}
+
+function validInput(transactionFormData){
+    if((transactionFormData.get('transactionType')==null)||(transactionFormData.get('transactionDescription')=='')||(transactionFormData.get('transactionAmount')=='')){
+        let containerError = document.getElementById('containerError');
+        containerError.innerHTML = '';
+    
+        let error = document.createElement('div');
+        error.setAttribute('class','error');
+        let errorContent = document.createTextNode('Please fill in all the fields');
+        error.appendChild(errorContent);
+        containerError.appendChild(error);
+
+        return false
+    }
+
+    containerError.innerHTML = '';
 }
 
 //METHOD TO ADD ROWS AND COLUMNS WITH THE DOM
