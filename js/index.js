@@ -14,13 +14,48 @@ form.addEventListener('submit',function(e){
     e.preventDefault();
 
     let transactionFormData = new FormData(form);
-    let transactionObj = convertFormDataToTransactionObj(transactionFormData);
 
-    saveTransactionObj(transactionObj);
-    insertNewRowTable(transactionObj);
+    if(!(validInput(transactionFormData)==false)){
+        let transactionObj = convertFormDataToTransactionObj(transactionFormData);
 
-    form.reset();
+        saveTransactionObj(transactionObj);
+        insertNewRowTable(transactionObj);
+    
+        form.reset();
+    }
 });
+
+function validInput(transactionFormData){
+    let band = true;
+
+    if(transactionFormData.get('transactionType')==null){
+        band = false;
+    }
+    if(transactionFormData.get('transactionDescription')==''){
+        band = false;
+    }
+    if(transactionFormData.get('transactionAmount')==''){
+        band = false;
+    }
+
+    if(band==false){
+        showError();
+        return false;
+    }
+
+    containerError.innerHTML = '';
+}
+
+function showError(){
+    let containerError = document.getElementById('containerError');
+    containerError.innerHTML = '';
+
+    let error = document.createElement('div');
+    error.setAttribute('class','error');
+    let errorContent = document.createTextNode('Error, complete the fields');
+    error.appendChild(errorContent);
+    containerError.appendChild(error);
+}
 
 function insertNewRowTable(transactionObj){
     let transactionTable = document.getElementById('transactionTable');
@@ -77,6 +112,8 @@ function convertFormDataToTransactionObj(transactionFormData){
 }
 
 function removeTransactionObj(transactionId){
+    containerError.innerHTML = '';
+    
     let transactionObjArr = JSON.parse(localStorage.getItem('transactionData'));
     //I search the index of the transaction to remove
     let transactionIndexArr = transactionObjArr.findIndex(element => element.transactionId == transactionId);

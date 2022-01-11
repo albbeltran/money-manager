@@ -9,13 +9,13 @@
 </head>
 <body>
     <h1 class="title">Expend Manager</h1>
-    <div class="container">
+    <div class="container" id="container">
         <form class="transactionForm" id="transactionForm">
             <div>
                 Transaccion Type
-                <input type="radio" id="income" name="transactionType" value="Ingreso">
+                <input type="radio" id="income" name="transactionType" value="Income">
                 <label for="income">Income</label>
-                <input type="radio" id="expense" name="transactionType" value="Egreso">
+                <input type="radio" id="expense" name="transactionType" value="Expense">
                 <label for="expense">Expense</label>
             </div>
     
@@ -46,6 +46,10 @@
                     <th>Delete</th>
                 </tr>
             </table>
+        </div>
+
+        <div class="containerError" id="containerError">
+
         </div>
     </div>
 

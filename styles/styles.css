@@ -42,3 +42,11 @@
     text-align: center;
     border: 1px solid black;
 }
+
+.container .containerError .error{
+    margin: 2em 10em;
+    padding: 1em 0em;
+    text-align: center;
+    background: tomato;
+    font-size: 18px;
+}
