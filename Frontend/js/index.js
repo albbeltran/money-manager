@@ -58,13 +58,6 @@ function insertCellTable(newTransactionRow,transaction){
     newTransactionCell.textContent = transaction;
 }
 
-function getTransactionId(){
-    let lastTransactionId = localStorage.getItem('lastTransactionId') || '-1';
-    let newTransactionId = JSON.parse(lastTransactionId) + 1;
-    localStorage.setItem('lastTransactionId',JSON.stringify(newTransactionId));
-    return newTransactionId;
-}
-
 function convertFormDataToTransactionObj(transactionFormData){
     let transactionType = transactionFormData.get('transactionType');
     let transactionDescription = transactionFormData.get('transactionDescription');
@@ -79,6 +72,13 @@ function convertFormDataToTransactionObj(transactionFormData){
         'transactionCategory': transactionCategory,
         'transactionId' : transactionId
     }
+}
+
+function getTransactionId(){
+    let lastTransactionId = localStorage.getItem('lastTransactionId') || '-1';
+    let newTransactionId = JSON.parse(lastTransactionId) + 1;
+    localStorage.setItem('lastTransactionId',JSON.stringify(newTransactionId));
+    return newTransactionId;
 }
 
 function drawOptionCategory(){
