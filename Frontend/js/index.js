@@ -2,14 +2,20 @@ const form = document.getElementById('transactionForm');
 
 // localStorage.removeItem('transactionData');
 
+let transactionObjArray = JSON.parse(localStorage.getItem('transactionData'));
+
 document.addEventListener('DOMContentLoaded',function(){
     drawOptionCategory();
-    let transactionObjArray = JSON.parse(localStorage.getItem('transactionData'));
 
     transactionObjArray.forEach(function(element){
         insertNewRowTable(element);
     });
 });
+
+function getTransactionsFromApi(){
+    const allTransactions = fetch('http://localhost:3000/transactions');
+    console.log(allTransactions);
+}
 
 form.addEventListener('submit',function(e){
     e.preventDefault();
@@ -98,12 +104,11 @@ function insertOptionCategory(category){
 function removeTransactionObj(transactionId){
     containerError.innerHTML = '';
 
-    let transactionObjArr = JSON.parse(localStorage.getItem('transactionData'));
     //I search the index of the transaction to remove
-    let transactionIndexArr = transactionObjArr.findIndex(element => element.transactionId == transactionId);
+    let transactionIndexArr = transactionObjArray.findIndex(element => element.transactionId == transactionId);
     //I remove the transaction
-    transactionObjArr.splice(transactionIndexArr,1);
-    let JSONtransactionArray = JSON.stringify(transactionObjArr);
+    transactionObjArray.splice(transactionIndexArr,1);
+    let JSONtransactionArray = JSON.stringify(transactionObjArray);
     localStorage.setItem('transactionData',JSONtransactionArray);
 }
 
@@ -133,6 +138,8 @@ function validInput(transactionFormData){
 
     containerError.innerHTML = '';
 }
+
+console.log(fetch('http://localhost:3000/transactions'));
 
 //METHOD TO ADD ROWS AND COLUMNS WITH THE DOM
 
