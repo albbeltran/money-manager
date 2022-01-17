@@ -2,19 +2,27 @@ const form = document.getElementById('transactionForm');
 
 // localStorage.removeItem('transactionData');
 
-let transactionObjArray = JSON.parse(localStorage.getItem('transactionData'));
+// let transactionObjArray = JSON.parse(localStorage.getItem('transactionData'));
+let transactionObjArray = getTransactionsFromApi();
+
+function getTransactionsFromApi(){
+    return fetch('http://localhost:3000/transactions')
+        .then(res => res.json())
+        .then(data => showInScreenArray(data))
+        .catch(function(){
+            document.getElementById('alert').removeAttribute('class')
+            document.getElementById('alert').setAttribute('class','alert show')
+        })
+}
 
 document.addEventListener('DOMContentLoaded',function(){
     drawOptionCategory();
+});
 
+function showInScreenArray(transactionObjArray){
     transactionObjArray.forEach(function(element){
         insertNewRowTable(element);
     });
-});
-
-function getTransactionsFromApi(){
-    const allTransactions = fetch('http://localhost:3000/transactions');
-    console.log(allTransactions);
 }
 
 form.addEventListener('submit',function(e){
@@ -138,8 +146,6 @@ function validInput(transactionFormData){
 
     containerError.innerHTML = '';
 }
-
-console.log(fetch('http://localhost:3000/transactions'));
 
 //METHOD TO ADD ROWS AND COLUMNS WITH THE DOM
 
