@@ -1,6 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 
+// calling body-parser to handle the Request Object from POST requests
+const bodyParser = require('body-parser')
+
 const app = express()
 app.use(cors())
 
@@ -16,8 +19,19 @@ app.get('/transactions', (req, res) => {
   res.send(transactions)
 })
 
+// app.use(express.json());
+// app.use(express.urlencoded());
+
+// parse application/json
+app.use(bodyParser.json())
+
+app.post('/transactions', (req, res) => {
+  console.log(req.body);
+  res.send('All ok');
+})
+
 app.get('/transactions/:id', (req, res) => {
-  const transactionId = req.params.id;
+  const transactionId = req.params.id
   const selectedTransaction = transactions.filter(transaction => transaction.transactionId == transactionId)
   res.send(selectedTransaction)
 })

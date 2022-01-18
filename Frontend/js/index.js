@@ -3,7 +3,13 @@ const form = document.getElementById('transactionForm');
 // localStorage.removeItem('transactionData');
 
 // let transactionObjArray = JSON.parse(localStorage.getItem('transactionData'));
-let transactionObjArray = getTransactionsFromApi();
+let transactionObjArray = fetch('http://localhost:3000/transactions')
+.then(res => res.json())
+.then(data => showInScreenArray(data))
+.catch(function(){
+    document.getElementById('alert').removeAttribute('class')
+    document.getElementById('alert').setAttribute('class','alert show')
+});
 
 function getTransactionsFromApi(){
     return fetch('http://localhost:3000/transactions')
@@ -121,13 +127,13 @@ function removeTransactionObj(transactionId){
 }
 
 function saveTransactionObj(transactionObj){
-    //Getting the array from the local storage
-    let transactionArray = JSON.parse(localStorage.getItem('transactionData')) || [];
-    transactionArray.push(transactionObj);
-    //Converting the transaction array to JSON
-    let JSONtransactionArray = JSON.stringify(transactionArray);
-    //Saving the transaction array JSON in the local storage
-    localStorage.setItem('transactionData',JSONtransactionArray);
+    fetch('http://localhost:3000/transactions', {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json",
+        },
+        body: JSON.stringify(transactionObj),
+    });
 }
 
 function validInput(transactionFormData){
